@@ -14,12 +14,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: NotesListVC())
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
+        window = UIWindow(windowScene: windowScene)
         
-        self.window = window
+        let rootNavigationController = UINavigationController()
+        let container = ProjectFactory()
+        let coordinator = container.makeInitialCoordinator()
+                
+        coordinator.start(with: rootNavigationController)
+        
+        window?.rootViewController = rootNavigationController
+        window?.makeKeyAndVisible()
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {

@@ -8,6 +8,7 @@
 import Foundation
 
 protocol NoteListPresenterInput: AnyObject {
+    
     init(view: NoteListPresenterOutput, model: NoteModelInput)
     
     func getNotesCount() -> Int?
@@ -48,10 +49,12 @@ final class NoteListPresenter: NoteListPresenterInput {
     
     func addNewNote(title: String?, bodyText: String?) {
         model?.createNewNote(title: title, bodyText: bodyText)
+        view?.reloadData()
     }
     
     func deleteNoteBy(index: Int) {
         guard let note = model?.fetchAllNotes()[index] else { return }
         model?.deleteNote(note: note)
+        view?.reloadData()
     }
 }

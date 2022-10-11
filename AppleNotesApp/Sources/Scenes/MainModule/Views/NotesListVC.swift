@@ -26,15 +26,11 @@ class NotesListVC: UIViewController {
 
         return tableView
     }()
-    
-    let testModel = [Note]()
 
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        presenter = NoteListPresenter(view: self, model: NoteModel())
         
         setupNavigationController()
         setupToolBar()
@@ -98,7 +94,6 @@ class NotesListVC: UIViewController {
     
     @objc func createNewNote() {
         presenter?.addNewNote(title: "Список покупок", bodyText: "Картошка, макароны, соус, кетчуп")
-        reloadData()
         setupToolBar()
     }
 }
@@ -149,6 +144,14 @@ extension NotesListVC: UITableViewDelegate {
                    forRowAt indexPath: IndexPath) {
         
         presenter?.deleteNoteBy(index: indexPath.row)
-        tableView.reloadData()
+        setupToolBar()
+    }
+}
+
+// MARK: - Extension for setup presenter
+
+extension NotesListVC {
+    func setupPresenter(presenter: NoteListPresenterInput) {
+        self.presenter = presenter
     }
 }

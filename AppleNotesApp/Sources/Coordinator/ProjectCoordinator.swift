@@ -30,7 +30,7 @@ class ProjectCoordinator: RootCoordinator {
     }
     
     func moveToDetail(with data: Note) {
-        let viewController = factory.makeDetailViewController(coordinator: self, data: data)
+        let viewController = factory.makeDetailViewController(coordinator: self, note: data)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

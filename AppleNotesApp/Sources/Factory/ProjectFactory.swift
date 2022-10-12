@@ -9,7 +9,7 @@ import UIKit
 
 protocol Factory {
     func makeInitialViewController(coordinator: ProjectCoordinator) -> UIViewController
-    func makeDetailViewController(coordinator: ProjectCoordinator, data: Note) -> UIViewController
+    func makeDetailViewController(coordinator: ProjectCoordinator, note: Note) -> UIViewController
 }
 
 class ProjectFactory: Factory {
@@ -17,15 +17,22 @@ class ProjectFactory: Factory {
     func makeInitialViewController(coordinator: ProjectCoordinator) -> UIViewController {
         let viewController = NotesListVC()
         let model = NoteModel()
-        let presenter = NoteListPresenter(view: viewController, model: model)
-        
+        let presenter = NoteListPresenter(coordinator: coordinator,
+                                          view: viewController,
+                                          model: model)
         viewController.setupPresenter(presenter: presenter)
         
         return viewController
     }
   
-    func makeDetailViewController(coordinator: ProjectCoordinator, data: Note) -> UIViewController {
-        let viewController = UIViewController()
+    func makeDetailViewController(coordinator: ProjectCoordinator, note: Note) -> UIViewController {
+        let viewController = DetailNoteVC()
+        let model = NoteModel()
+        let presenter = DetailNotePresenter(coordinator: coordinator,
+                                            view: viewController,
+                                            model: model)
+        viewController.setupPresenter(presenter: presenter)
+        viewController.showInformationFor(note: note)
         
         return viewController
     }

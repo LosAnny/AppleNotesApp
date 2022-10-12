@@ -7,15 +7,20 @@
 
 import Foundation
 
+// MARK: - Input Protocol
+
 protocol NoteListPresenterInput: AnyObject {
     
-    init(view: NoteListPresenterOutput, model: NoteModelInput)
+    init(coordinator: ProjectCoordinator, view: NoteListPresenterOutput, model: NoteModelInput)
     
     func getNotesCount() -> Int?
     func getNoteBy(index: Int) -> Note?
     func addNewNote(title: String?, bodyText: String?)
     func deleteNoteBy(index: Int)
+    func showNoteDetailBy(index: Int)
 }
+
+// MARK: - Output Protocol
 
 protocol NoteListPresenterOutput: AnyObject {
     func reloadData()
@@ -27,10 +32,12 @@ final class NoteListPresenter: NoteListPresenterInput {
     
     private weak var view: NoteListPresenterOutput?
     private var model: NoteModelInput?
+    private var coordinator: ProjectCoordinator?
     
     // MARK: - Initialization
     
-    init(view: NoteListPresenterOutput, model: NoteModelInput) {
+    init(coordinator: ProjectCoordinator, view: NoteListPresenterOutput, model: NoteModelInput) {
+        self.coordinator = coordinator
         self.view = view
         self.model = model
     }
@@ -56,5 +63,10 @@ final class NoteListPresenter: NoteListPresenterInput {
         guard let note = model?.fetchAllNotes()[index] else { return }
         model?.deleteNote(note: note)
         view?.reloadData()
+    }
+    
+    func showNoteDetailBy(index: Int) {
+        guard let note = model?.fetchAllNotes()[index] else { return }
+        coordinator?.moveToDetail(with: note)
     }
 }

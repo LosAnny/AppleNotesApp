@@ -22,6 +22,8 @@
 		94F077FB28F5AA9200E72E3B /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F077FA28F5AA9200E72E3B /* RootCoordinator.swift */; };
 		94F077FD28F5AAE800E72E3B /* ProjectCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F077FC28F5AAE800E72E3B /* ProjectCoordinator.swift */; };
 		94F0780128F5B4BB00E72E3B /* ProjectFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F0780028F5B4BB00E72E3B /* ProjectFactory.swift */; };
+		94F0780628F5E14900E72E3B /* DetailNotePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F0780528F5E14900E72E3B /* DetailNotePresenter.swift */; };
+		94F0780828F5E57800E72E3B /* DetailNoteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F0780728F5E57800E72E3B /* DetailNoteVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		94F077FA28F5AA9200E72E3B /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		94F077FC28F5AAE800E72E3B /* ProjectCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCoordinator.swift; sourceTree = "<group>"; };
 		94F0780028F5B4BB00E72E3B /* ProjectFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFactory.swift; sourceTree = "<group>"; };
+		94F0780528F5E14900E72E3B /* DetailNotePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNotePresenter.swift; sourceTree = "<group>"; };
+		94F0780728F5E57800E72E3B /* DetailNoteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailNoteVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,7 @@
 			children = (
 				94F077B328F31EBE00E72E3B /* Model */,
 				94F077B728F3EF0400E72E3B /* MainModule */,
+				94F0780228F5E0EC00E72E3B /* DetailModule */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -198,6 +203,31 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
+		94F0780228F5E0EC00E72E3B /* DetailModule */ = {
+			isa = PBXGroup;
+			children = (
+				94F0780428F5E12F00E72E3B /* View */,
+				94F0780328F5E12700E72E3B /* Presenter */,
+			);
+			path = DetailModule;
+			sourceTree = "<group>";
+		};
+		94F0780328F5E12700E72E3B /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				94F0780528F5E14900E72E3B /* DetailNotePresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		94F0780428F5E12F00E72E3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				94F0780728F5E57800E72E3B /* DetailNoteVC.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -269,8 +299,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				94F0777328F1B96800E72E3B /* NotesListVC.swift in Sources */,
+				94F0780628F5E14900E72E3B /* DetailNotePresenter.swift in Sources */,
 				94F077BD28F3F2E100E72E3B /* NoteModel.swift in Sources */,
 				94F0780128F5B4BB00E72E3B /* ProjectFactory.swift in Sources */,
+				94F0780828F5E57800E72E3B /* DetailNoteVC.swift in Sources */,
 				94F077FD28F5AAE800E72E3B /* ProjectCoordinator.swift in Sources */,
 				94F077BB28F3F1F900E72E3B /* Note+CoreDataProperties.swift in Sources */,
 				94F0776F28F1B96800E72E3B /* AppDelegate.swift in Sources */,
@@ -428,6 +460,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,6 +490,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

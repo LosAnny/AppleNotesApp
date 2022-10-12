@@ -93,7 +93,7 @@ class NotesListVC: UIViewController {
     // MARK: - Objc functions
     
     @objc func createNewNote() {
-        presenter?.addNewNote(title: "Список покупок", bodyText: "Картошка, макароны, соус, кетчуп")
+        presenter?.addNewNote(title: "Список покупок!!! УРАААА", bodyText: "Картошка, макароны, соус, кетчуп")
         setupToolBar()
     }
 }
@@ -138,6 +138,10 @@ extension NotesListVC: UITableViewDataSource {
 // MARK: - Extension for UITableViewDelegate
 
 extension NotesListVC: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.showNoteDetailBy(index: indexPath.row)
+    }
     
     func tableView(_ tableView: UITableView,
                    commit editingStyle: UITableViewCell.EditingStyle,

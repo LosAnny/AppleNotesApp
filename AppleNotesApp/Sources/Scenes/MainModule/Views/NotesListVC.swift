@@ -99,7 +99,7 @@ class NotesListVC: UIViewController {
     // MARK: - Objc functions
     
     @objc func createNewNote() {
-        presenter?.addNewNote(title: "Список покупок!!! УРАААА", bodyText: "Картошка, макароны, соус, кетчуп")
+        presenter?.addNewNote(title: "", bodyText: "")
     }
 }
 

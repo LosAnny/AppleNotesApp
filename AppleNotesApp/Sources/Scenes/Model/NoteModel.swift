@@ -12,7 +12,7 @@ import CoreData
 
 protocol NoteModelInput {
     func fetchAllNotes() -> [Note]
-    func createNewNote(title: String?, bodyText: String?)
+    func createNewNote(title: String?, bodyText: String?) -> Note
     func updateNote(note: Note, title: String?, bodyText: String?)
     func deleteNote(note: Note)
 }
@@ -34,7 +34,7 @@ final class NoteModel: NoteModelInput {
         return noteModel
     }
     
-    func createNewNote(title: String?, bodyText: String?) {
+    func createNewNote(title: String?, bodyText: String?) -> Note {
         
         let newNote = Note(context: context)
         newNote.title = title
@@ -47,6 +47,8 @@ final class NoteModel: NoteModelInput {
         catch {
             print("Core Data Error: \(error)")
         }
+        
+        return newNote
     }
     
     func updateNote(note: Note, title: String?, bodyText: String?) {

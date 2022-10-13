@@ -55,8 +55,9 @@ final class NoteListPresenter: NoteListPresenterInput {
     }
     
     func addNewNote(title: String?, bodyText: String?) {
-        model?.createNewNote(title: title, bodyText: bodyText)
+        guard let newNote = model?.createNewNote(title: title, bodyText: bodyText) else { return }
         view?.reloadData()
+        coordinator?.moveToDetail(with: newNote)
     }
     
     func deleteNoteBy(index: Int) {

@@ -12,6 +12,7 @@ class DetailNoteVC: UIViewController {
     // MARK: - Properties
     
     private var presenter: DetailNotePresenterInput?
+    var activeTextView: UITextView? = nil
 
     // MARK: - Outlets
     
@@ -20,6 +21,14 @@ class DetailNoteVC: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
         
         return scrollView
+    }()
+    
+    private lazy var scrollStackViewContainer: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.spacing = 0
+        
+        return view
     }()
     
     private lazy var titleText = createTextViewWith(font: .boldSystemFont(ofSize: 32))
@@ -35,9 +44,14 @@ class DetailNoteVC: UIViewController {
         setupView()
         setupHierarchy()
         setupLayouts()
+        setupKeyboardObserver()
     }
     
     // MARK: - Setup
+    
+    func setupPresenter(presenter: DetailNotePresenterInput) {
+        self.presenter = presenter
+    }
     
     private func setupNavigationController() {
 
@@ -52,20 +66,10 @@ class DetailNoteVC: UIViewController {
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
                                      target: self,
                                      action: nil)
-        let checklistTool = UIBarButtonItem(image: UIImage(systemName: "checklist"),
-                                            style: .plain,
-                                            target: self,
-                                            action: nil)
-        let cameraTool = UIBarButtonItem(barButtonSystemItem: .camera,
-                                          target: self,
-                                          action: nil)
-        let pencilTool = UIBarButtonItem(image: UIImage(systemName: "pencil.tip.crop.circle"),
-                                            style: .plain,
-                                            target: self,
-                                            action: nil)
-        let newNoteTool = UIBarButtonItem(barButtonSystemItem: .compose,
-                                          target: self,
-                                          action: nil)
+        let checklistTool = UIBarButtonItem(image: UIImage(systemName: "checklist"))
+        let cameraTool = UIBarButtonItem(image: UIImage(systemName: "camera"))
+        let pencilTool = UIBarButtonItem(image: UIImage(systemName: "pencil.tip.crop.circle"))
+        let newNoteTool = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"))
         
         toolbarItems = [checklistTool, spacer, cameraTool, spacer, pencilTool, spacer,newNoteTool]
         navigationController?.toolbar.tintColor = .systemYellow
@@ -77,8 +81,9 @@ class DetailNoteVC: UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(scrollView)
-        scrollView.addSubview(titleText)
-        scrollView.addSubview(bodyText)
+        scrollView.addSubview(scrollStackViewContainer)
+        scrollStackViewContainer.addArrangedSubview(titleText)
+        scrollStackViewContainer.addArrangedSubview(bodyText)
     }
         
     private func setupLayouts() {
@@ -89,16 +94,50 @@ class DetailNoteVC: UIViewController {
         scrollView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
         
-        titleText.translatesAutoresizingMaskIntoConstraints = false
-        titleText.topAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.topAnchor).isActive = true
-        titleText.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor).isActive = true
-        titleText.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor).isActive = true
-        titleText.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        scrollStackViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        scrollStackViewContainer.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
+        scrollStackViewContainer.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor).isActive = true
+        scrollStackViewContainer.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
+        scrollStackViewContainer.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
+        scrollStackViewContainer.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
+    }
+    
+    // MARK: - Keyboard setup
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else { return }
 
-        bodyText.translatesAutoresizingMaskIntoConstraints = false
-        bodyText.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: 10).isActive = true
-        bodyText.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor).isActive = true
-        bodyText.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor).isActive = true
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height , right: 0.0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Готово",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(dismissKeyboard))
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        navigationItem.rightBarButtonItem = nil
+    }
+    
+    private func setupKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    @objc func dismissKeyboard(){
+        view.endEditing(true)
     }
     
     // MARK: - Functions for create UI
@@ -128,13 +167,15 @@ extension DetailNoteVC: DetailNotePresenterOutput {
     }
 }
 
-extension DetailNoteVC {
-    func setupPresenter(presenter: DetailNotePresenterInput) {
-        self.presenter = presenter
-    }
-}
-
 extension DetailNoteVC: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        activeTextView = textView
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        activeTextView = nil
+    }
     
     func textViewDidChangeSelection(_ textView: UITextView) {
         let size = CGSize(width: view.frame.width, height: .infinity)
@@ -147,3 +188,4 @@ extension DetailNoteVC: UITextViewDelegate {
         }
     }
 }
+

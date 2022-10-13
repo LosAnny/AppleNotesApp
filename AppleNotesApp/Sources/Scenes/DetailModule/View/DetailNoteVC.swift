@@ -39,19 +39,22 @@ class DetailNoteVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNavigationController()
-        setupToolBar()
         setupView()
         setupHierarchy()
         setupLayouts()
         setupKeyboardObserver()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationController()
+        setupToolBar()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         if self.isMovingFromParent {
-            
             if titleText.text.isEmpty && bodyText.text.isEmpty {
                 presenter?.deleteNote(note!)
             } else {

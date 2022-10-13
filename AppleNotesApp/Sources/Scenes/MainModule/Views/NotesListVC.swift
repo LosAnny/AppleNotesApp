@@ -39,6 +39,12 @@ class NotesListVC: UIViewController {
         setupLayouts()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        reloadData()
+    }
+    
     // MARK: - Setup
     
     private func setupNavigationController() {
@@ -94,7 +100,6 @@ class NotesListVC: UIViewController {
     
     @objc func createNewNote() {
         presenter?.addNewNote(title: "Список покупок!!! УРАААА", bodyText: "Картошка, макароны, соус, кетчуп")
-        setupToolBar()
     }
 }
 
@@ -104,6 +109,7 @@ extension NotesListVC: NoteListPresenterOutput {
     
     func reloadData() {
         tableView.reloadData()
+        setupToolBar()
     }
 }
 
@@ -148,7 +154,6 @@ extension NotesListVC: UITableViewDelegate {
                    forRowAt indexPath: IndexPath) {
         
         presenter?.deleteNoteBy(index: indexPath.row)
-        setupToolBar()
     }
 }
 

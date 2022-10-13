@@ -50,8 +50,8 @@ final class NoteModel: NoteModelInput {
     }
     
     func updateNote(note: Note, title: String?, bodyText: String?) {
-        note.title = title
-        note.bodyText = bodyText
+        note.title = title!.isEmpty ? "Без названия" : title
+        note.bodyText = bodyText!.isEmpty ? "Нет описания" : bodyText
         note.date = Date()
         
         do {

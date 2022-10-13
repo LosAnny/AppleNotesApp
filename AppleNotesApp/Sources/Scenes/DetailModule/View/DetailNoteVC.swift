@@ -12,7 +12,7 @@ class DetailNoteVC: UIViewController {
     // MARK: - Properties
     
     private var presenter: DetailNotePresenterInput?
-    var activeTextView: UITextView? = nil
+    private var note: Note?
 
     // MARK: - Outlets
     
@@ -45,6 +45,19 @@ class DetailNoteVC: UIViewController {
         setupHierarchy()
         setupLayouts()
         setupKeyboardObserver()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            
+            if titleText.text.isEmpty && bodyText.text.isEmpty {
+                presenter?.deleteNote(note!)
+            } else {
+                presenter?.updateNoteWith(note: note!, title: titleText.text, bodyText: bodyText.text)
+            }
+        }
     }
     
     // MARK: - Setup
@@ -157,25 +170,17 @@ class DetailNoteVC: UIViewController {
     }
 }
 
-
 // MARK: - Extensions
 
 extension DetailNoteVC: DetailNotePresenterOutput {
     func showInformationFor(note: Note) {
+        self.note = note
         titleText.text = note.title
         bodyText.text = note.bodyText
     }
 }
 
 extension DetailNoteVC: UITextViewDelegate {
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        activeTextView = textView
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        activeTextView = nil
-    }
     
     func textViewDidChangeSelection(_ textView: UITextView) {
         let size = CGSize(width: view.frame.width, height: .infinity)

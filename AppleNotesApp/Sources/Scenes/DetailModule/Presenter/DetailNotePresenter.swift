@@ -15,6 +15,7 @@ protocol DetailNotePresenterInput: AnyObject {
     
     func showNote(_ note: Note)
     func updateNoteWith(note: Note, title: String?, bodyText: String?)
+    func deleteNote(_ note: Note)
     func returnToMainView()
 }
 
@@ -45,6 +46,10 @@ final class DetailNotePresenter: DetailNotePresenterInput {
     
     func updateNoteWith(note: Note, title: String?, bodyText: String?) {
         model?.updateNote(note: note, title: title, bodyText: bodyText)
+    }
+    
+    func deleteNote(_ note: Note) {
+        model?.deleteNote(note: note)
     }
     
     func returnToMainView() {

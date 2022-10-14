@@ -26,6 +26,18 @@ class NotesCollectionListVC: UIViewController {
 
         return collectionView
     }()
+    
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+    
+        searchController.searchBar.placeholder = "Поиск..."
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.barTintColor = .systemGroupedBackground
+        searchController.searchBar.tintColor = .label
+        
+        return searchController
+    }()
 
     // MARK: - Lifecycle
 
@@ -57,6 +69,7 @@ class NotesCollectionListVC: UIViewController {
                                                             target: self,
                                                             action: #selector(showList))
         navigationItem.rightBarButtonItem?.tintColor = .systemYellow
+        navigationItem.searchController = searchController
     }
     
     private func setupToolBar() {

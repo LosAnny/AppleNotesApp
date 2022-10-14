@@ -26,6 +26,18 @@ class NotesListVC: UIViewController {
 
         return tableView
     }()
+    
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+    
+        searchController.searchBar.placeholder = "Поиск..."
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.barTintColor = .systemGroupedBackground
+        searchController.searchBar.tintColor = .label
+        
+        return searchController
+    }()
 
     // MARK: - Lifecycle
     
@@ -86,6 +98,7 @@ class NotesListVC: UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(tableView)
+        tableView.tableHeaderView = searchController.searchBar
     }
         
     private func setupLayouts() {

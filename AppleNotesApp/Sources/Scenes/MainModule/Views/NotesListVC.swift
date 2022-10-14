@@ -26,6 +26,18 @@ class NotesListVC: UIViewController {
 
         return tableView
     }()
+    
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+    
+        searchController.searchBar.placeholder = "Поиск..."
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.barTintColor = .systemGroupedBackground
+        searchController.searchBar.tintColor = .label
+        
+        return searchController
+    }()
 
     // MARK: - Lifecycle
     
@@ -44,18 +56,18 @@ class NotesListVC: UIViewController {
         
         reloadData()
     }
-    
+
     // MARK: - Setup
     
     private func setupNavigationController() {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Заметки"
-        let imageForNavigationItem = UIImage(systemName: "ellipsis.circle")
+        let imageForNavigationItem = UIImage(systemName: "square.grid.2x2")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: imageForNavigationItem,
-                                                            style: .plain,
+                                                            style: .done,
                                                             target: self,
-                                                            action: nil)
+                                                            action: #selector(showGalleryList))
         navigationItem.rightBarButtonItem?.tintColor = .systemYellow
     }
     
@@ -86,6 +98,7 @@ class NotesListVC: UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(tableView)
+        tableView.tableHeaderView = searchController.searchBar
     }
         
     private func setupLayouts() {
@@ -100,6 +113,10 @@ class NotesListVC: UIViewController {
     
     @objc func createNewNote() {
         presenter?.addNewNote(title: "", bodyText: "")
+    }
+    
+    @objc func showGalleryList() {
+        presenter?.showGalleryList()
     }
 }
 

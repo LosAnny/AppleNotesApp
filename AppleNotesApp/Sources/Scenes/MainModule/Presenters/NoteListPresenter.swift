@@ -11,13 +11,15 @@ import Foundation
 
 protocol NoteListPresenterInput: AnyObject {
     
-    init(coordinator: ProjectCoordinator, view: NoteListPresenterOutput, model: NoteModelInput)
+    init(view: NoteListPresenterOutput, model: NoteModelInput, router: RouterProtocol)
     
     func getNotesCount() -> Int?
     func getNoteBy(index: Int) -> Note?
     func addNewNote(title: String?, bodyText: String?)
     func deleteNoteBy(index: Int)
     func showNoteDetailBy(index: Int)
+    func showGalleryList()
+    func showList()
 }
 
 // MARK: - Output Protocol
@@ -32,14 +34,14 @@ final class NoteListPresenter: NoteListPresenterInput {
     
     private weak var view: NoteListPresenterOutput?
     private var model: NoteModelInput?
-    private var coordinator: ProjectCoordinator?
+    private var router: RouterProtocol?
     
     // MARK: - Initialization
     
-    init(coordinator: ProjectCoordinator, view: NoteListPresenterOutput, model: NoteModelInput) {
-        self.coordinator = coordinator
+    init(view: NoteListPresenterOutput, model: NoteModelInput, router: RouterProtocol) {
         self.view = view
         self.model = model
+        self.router = router
     }
     
     // MARK: - Presenter input functions
@@ -57,7 +59,7 @@ final class NoteListPresenter: NoteListPresenterInput {
     func addNewNote(title: String?, bodyText: String?) {
         guard let newNote = model?.createNewNote(title: title, bodyText: bodyText) else { return }
         view?.reloadData()
-        coordinator?.moveToDetail(with: newNote)
+        router?.makeDetailViewController(note: newNote)
     }
     
     func deleteNoteBy(index: Int) {
@@ -68,6 +70,14 @@ final class NoteListPresenter: NoteListPresenterInput {
     
     func showNoteDetailBy(index: Int) {
         guard let note = model?.fetchAllNotes()[index] else { return }
-        coordinator?.moveToDetail(with: note)
+        router?.makeDetailViewController(note: note)
+    }
+    
+    func showGalleryList() {
+        router?.makeAdditionalController()
+    }
+    
+    func showList() {
+        router?.makeInitialViewController()
     }
 }

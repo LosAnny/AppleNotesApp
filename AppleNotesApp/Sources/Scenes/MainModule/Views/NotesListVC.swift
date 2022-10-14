@@ -44,18 +44,18 @@ class NotesListVC: UIViewController {
         
         reloadData()
     }
-    
+
     // MARK: - Setup
     
     private func setupNavigationController() {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Заметки"
-        let imageForNavigationItem = UIImage(systemName: "ellipsis.circle")
+        let imageForNavigationItem = UIImage(systemName: "square.grid.2x2")
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: imageForNavigationItem,
-                                                            style: .plain,
+                                                            style: .done,
                                                             target: self,
-                                                            action: nil)
+                                                            action: #selector(showGalleryList))
         navigationItem.rightBarButtonItem?.tintColor = .systemYellow
     }
     
@@ -100,6 +100,10 @@ class NotesListVC: UIViewController {
     
     @objc func createNewNote() {
         presenter?.addNewNote(title: "", bodyText: "")
+    }
+    
+    @objc func showGalleryList() {
+        presenter?.showGalleryList()
     }
 }
 

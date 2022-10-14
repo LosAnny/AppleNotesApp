@@ -14,6 +14,7 @@ protocol RouterMain {
 
 protocol RouterProtocol: RouterMain {
     func makeInitialViewController()
+    func makeAdditionalController()
     func makeDetailViewController(note: Note?)
     func popToRoot()
 }
@@ -31,6 +32,13 @@ class Router: RouterProtocol {
     func makeInitialViewController() {
         if let navigationController = navigationController {
             guard let mainViewController = assemblyBuilder?.createMainModule(router: self) else { return }
+            navigationController.viewControllers = [mainViewController]
+        }
+    }
+    
+    func makeAdditionalController() {
+        if let navigationController = navigationController {
+            guard let mainViewController = assemblyBuilder?.createAdditionalModule(router: self) else { return }
             navigationController.viewControllers = [mainViewController]
         }
     }

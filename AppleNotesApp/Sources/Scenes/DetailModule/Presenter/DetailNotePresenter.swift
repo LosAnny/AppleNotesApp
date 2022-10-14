@@ -11,7 +11,7 @@ import Foundation
 
 protocol DetailNotePresenterInput: AnyObject {
     
-    init(coordinator: ProjectCoordinator, view: DetailNotePresenterOutput, model: NoteModelInput)
+    init(view: DetailNotePresenterOutput, model: NoteModelInput, router: RouterProtocol)
     
     func showNote(_ note: Note)
     func updateNoteWith(note: Note, title: String?, bodyText: String?)
@@ -27,17 +27,16 @@ protocol DetailNotePresenterOutput: AnyObject {
 
 final class DetailNotePresenter: DetailNotePresenterInput {
     
-    
     // MARK: - Properties
     
     private weak var view: DetailNotePresenterOutput?
     private var model: NoteModelInput?
-    private var coordinator: ProjectCoordinator?
+    private var router: RouterProtocol?
     
-    init(coordinator: ProjectCoordinator, view: DetailNotePresenterOutput, model: NoteModelInput) {
-        self.coordinator = coordinator
+    init(view: DetailNotePresenterOutput, model: NoteModelInput, router: RouterProtocol) {
         self.view = view
         self.model = model
+        self.router = router
     }
     
     func showNote(_ note: Note) {
@@ -53,6 +52,6 @@ final class DetailNotePresenter: DetailNotePresenterInput {
     }
     
     func returnToMainView() {
-        print("Обратно")
+        router?.popToRoot()
     }
 }
